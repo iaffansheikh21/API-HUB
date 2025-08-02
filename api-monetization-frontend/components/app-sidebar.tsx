@@ -1,0 +1,235 @@
+"use client"
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarMenuSub,
+  SidebarMenuSubButton,
+  SidebarMenuSubItem,
+} from "@/components/ui/sidebar"
+import {
+  LayoutDashboard,
+  Code,
+  Key,
+  BarChart3,
+  CreditCard,
+  Settings,
+  Users,
+  Store,
+  ChevronRight,
+  User,
+} from "lucide-react"
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+
+// Mock user data - in real app this would come from auth context
+const user = {
+  name: "John Doe",
+  email: "john@example.com",
+  role: "developer",
+  avatar: "/placeholder.svg?height=32&width=32",
+}
+
+const menuItems = {
+  developer: [
+    {
+      title: "Dashboard",
+      url: "/dashboard",
+      icon: LayoutDashboard,
+    },
+    {
+      title: "My APIs",
+      icon: Code,
+      items: [
+        { title: "All APIs", url: "/dashboard/apis" },
+        { title: "Create API", url: "/dashboard/apis/create" },
+        { title: "Analytics", url: "/dashboard/apis/analytics" },
+      ],
+    },
+    {
+      title: "API Keys",
+      url: "/dashboard/keys",
+      icon: Key,
+    },
+    {
+      title: "Subscriptions",
+      url: "/dashboard/subscriptions",
+      icon: Users,
+    },
+    {
+      title: "Analytics",
+      url: "/dashboard/analytics",
+      icon: BarChart3,
+    },
+    {
+      title: "Billing",
+      url: "/dashboard/billing",
+      icon: CreditCard,
+    },
+  ],
+  consumer: [
+    {
+      title: "Dashboard",
+      url: "/dashboard",
+      icon: LayoutDashboard,
+    },
+    {
+      title: "Marketplace",
+      url: "/dashboard/marketplace",
+      icon: Store,
+    },
+    {
+      title: "My Subscriptions",
+      url: "/dashboard/subscriptions",
+      icon: Users,
+    },
+    {
+      title: "API Keys",
+      url: "/dashboard/keys",
+      icon: Key,
+    },
+    {
+      title: "Usage",
+      url: "/dashboard/usage",
+      icon: BarChart3,
+    },
+    {
+      title: "Billing",
+      url: "/dashboard/billing",
+      icon: CreditCard,
+    },
+  ],
+  admin: [
+    {
+      title: "Dashboard",
+      url: "/dashboard",
+      icon: LayoutDashboard,
+    },
+    {
+      title: "Users",
+      url: "/dashboard/users",
+      icon: Users,
+    },
+    {
+      title: "APIs",
+      url: "/dashboard/admin/apis",
+      icon: Code,
+    },
+    {
+      title: "Analytics",
+      url: "/dashboard/admin/analytics",
+      icon: BarChart3,
+    },
+    {
+      title: "Settings",
+      url: "/dashboard/settings",
+      icon: Settings,
+    },
+  ],
+}
+
+export function AppSidebar() {
+  const items = menuItems[user.role as keyof typeof menuItems] || menuItems.developer
+
+  return (
+    <Sidebar>
+      <SidebarHeader>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <div className="flex items-center space-x-2 px-2 py-2">
+              <Code className="h-6 w-6 text-blue-600" />
+              <span className="text-lg font-bold">APIHub</span>
+            </div>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarHeader>
+
+      <SidebarContent>
+        <SidebarGroup>
+          <SidebarGroupLabel>Navigation</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {items.map((item) => (
+                <SidebarMenuItem key={item.title}>
+                  {item.items ? (
+                    <Collapsible className="group/collapsible">
+                      <CollapsibleTrigger asChild>
+                        <SidebarMenuButton>
+                          <item.icon className="h-4 w-4" />
+                          <span>{item.title}</span>
+                          <ChevronRight className="ml-auto h-4 w-4 transition-transform group-data-[state=open]/collapsible:rotate-90" />
+                        </SidebarMenuButton>
+                      </CollapsibleTrigger>
+                      <CollapsibleContent>
+                        <SidebarMenuSub>
+                          {item.items.map((subItem) => (
+                            <SidebarMenuSubItem key={subItem.title}>
+                              <SidebarMenuSubButton asChild>
+                                <a href={subItem.url}>
+                                  <span>{subItem.title}</span>
+                                </a>
+                              </SidebarMenuSubButton>
+                            </SidebarMenuSubItem>
+                          ))}
+                        </SidebarMenuSub>
+                      </CollapsibleContent>
+                    </Collapsible>
+                  ) : (
+                    <SidebarMenuButton asChild>
+                      <a href={item.url}>
+                        <item.icon className="h-4 w-4" />
+                        <span>{item.title}</span>
+                      </a>
+                    </SidebarMenuButton>
+                  )}
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+      </SidebarContent>
+
+      <SidebarFooter>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <SidebarMenuButton className="w-full">
+                  <Avatar className="h-6 w-6">
+                    <AvatarImage src={user.avatar || "/placeholder.svg"} />
+                    <AvatarFallback>
+                      <User className="h-4 w-4" />
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="flex flex-col items-start text-left">
+                    <span className="text-sm font-medium">{user.name}</span>
+                    <span className="text-xs text-muted-foreground capitalize">{user.role}</span>
+                  </div>
+                </SidebarMenuButton>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent side="top" className="w-(--radix-popper-anchor-width)">
+                <DropdownMenuItem>
+                  <Settings className="h-4 w-4 mr-2" />
+                  Settings
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <User className="h-4 w-4 mr-2" />
+                  Profile
+                </DropdownMenuItem>
+                <DropdownMenuItem className="text-red-600">Sign out</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarFooter>
+    </Sidebar>
+  )
+}
