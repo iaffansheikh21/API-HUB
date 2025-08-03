@@ -25,16 +25,21 @@ import {
   Store,
   ChevronRight,
   User,
+  PlusCircle,
+  List,
+  LineChart,
+  DollarSign,
 } from "lucide-react"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 
 // Mock user data - in real app this would come from auth context
+// Change 'role' to "user" or "admin" to see different sidebars
 const user = {
   name: "John Doe",
   email: "john@example.com",
-  role: "user", // Set to 'user' or 'admin' for demonstration
+  role: "user", // <--- Change this to "admin" to see the admin sidebar
   avatar: "/placeholder.svg?height=32&width=32",
 }
 
@@ -49,9 +54,9 @@ const menuItems = {
       title: "My APIs",
       icon: Code,
       items: [
-        { title: "All APIs", url: "/dashboard/apis" },
-        { title: "Create API", url: "/dashboard/apis/create" },
-        { title: "API Analytics", url: "/dashboard/apis/analytics" },
+        { title: "All APIs", url: "/dashboard/apis", icon: List },
+        { title: "Create API", url: "/dashboard/apis/create", icon: PlusCircle },
+        { title: "API Analytics", url: "/dashboard/apis/analytics", icon: LineChart },
       ],
     },
     {
@@ -101,10 +106,16 @@ const menuItems = {
       url: "/dashboard/admin/settings",
       icon: Settings,
     },
+    {
+      title: "Payments & Revenue",
+      url: "/dashboard/admin/payments",
+      icon: DollarSign,
+    },
   ],
 }
 
 export function AppSidebar() {
+  // Select menu items based on the user's role
   const items = menuItems[user.role as keyof typeof menuItems] || menuItems.user // Default to user if role is unknown
 
   return (
@@ -142,6 +153,7 @@ export function AppSidebar() {
                             <SidebarMenuSubItem key={subItem.title}>
                               <SidebarMenuSubButton asChild>
                                 <a href={subItem.url}>
+                                  {subItem.icon && <subItem.icon className="h-4 w-4" />}
                                   <span>{subItem.title}</span>
                                 </a>
                               </SidebarMenuSubButton>
