@@ -8,11 +8,12 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Checkbox } from "@/components/ui/checkbox"
-import { Code, Eye, EyeOff } from "lucide-react"
+import { Code, Eye, EyeOff, Github, Mail } from "lucide-react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
+import { Sparkles } from "@/components/ui/sparkles"
+import { BackgroundBeams } from "@/components/ui/background-beams"
 
 export default function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false)
@@ -21,7 +22,6 @@ export default function RegisterPage() {
     name: "",
     email: "",
     password: "",
-    role: "",
     agreeToTerms: false,
   })
   const router = useRouter()
@@ -46,24 +46,49 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 flex items-center justify-center p-4">
-      <div className="w-full max-w-md">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-50 flex items-center justify-center p-4 relative overflow-hidden">
+      <BackgroundBeams />
+
+      <div className="w-full max-w-md relative z-10">
         {/* Header */}
         <div className="text-center mb-8">
-          <Link href="/" className="inline-flex items-center space-x-2 mb-4">
-            <Code className="h-8 w-8 text-blue-600" />
-            <span className="text-2xl font-bold text-gray-900">APIHub</span>
-          </Link>
-          <h1 className="text-2xl font-bold text-gray-900">Create your account</h1>
-          <p className="text-gray-600 mt-2">Join thousands of developers monetizing their APIs</p>
+          <Sparkles>
+            <Link href="/" className="inline-flex items-center space-x-2 mb-6">
+              <Code className="h-10 w-10 text-blue-600" />
+              <span className="text-3xl font-bold text-gray-900">APIHub</span>
+            </Link>
+          </Sparkles>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">Create your account</h1>
+          <p className="text-gray-600">Join thousands of developers monetizing their APIs</p>
         </div>
 
-        <Card className="border-0 shadow-lg">
-          <CardHeader className="space-y-1">
-            <CardTitle className="text-2xl text-center">Sign Up</CardTitle>
-            <CardDescription className="text-center">Create your account to get started</CardDescription>
+        <Card className="border-0 shadow-2xl bg-white/80 backdrop-blur-sm">
+          <CardHeader className="space-y-1 text-center">
+            <CardTitle className="text-2xl">Sign Up</CardTitle>
+            <CardDescription>Create your account to get started</CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="space-y-6">
+            {/* Social Login */}
+            <div className="grid grid-cols-2 gap-4">
+              <Button variant="outline" className="bg-white/50 backdrop-blur-sm hover:bg-white/80">
+                <Github className="h-4 w-4 mr-2" />
+                GitHub
+              </Button>
+              <Button variant="outline" className="bg-white/50 backdrop-blur-sm hover:bg-white/80">
+                <Mail className="h-4 w-4 mr-2" />
+                Google
+              </Button>
+            </div>
+
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t border-gray-300" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-white px-2 text-gray-500">Or continue with</span>
+              </div>
+            </div>
+
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="name">Full Name</Label>
@@ -74,6 +99,7 @@ export default function RegisterPage() {
                   placeholder="Enter your full name"
                   value={formData.name}
                   onChange={handleInputChange}
+                  className="bg-white/50 backdrop-blur-sm border-gray-300 focus:bg-white"
                   required
                 />
               </div>
@@ -87,6 +113,7 @@ export default function RegisterPage() {
                   placeholder="Enter your email"
                   value={formData.email}
                   onChange={handleInputChange}
+                  className="bg-white/50 backdrop-blur-sm border-gray-300 focus:bg-white"
                   required
                 />
               </div>
@@ -101,6 +128,7 @@ export default function RegisterPage() {
                     placeholder="Create a strong password"
                     value={formData.password}
                     onChange={handleInputChange}
+                    className="bg-white/50 backdrop-blur-sm border-gray-300 focus:bg-white pr-10"
                     required
                   />
                   <Button
@@ -117,20 +145,6 @@ export default function RegisterPage() {
                     )}
                   </Button>
                 </div>
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="role">I want to</Label>
-                <Select onValueChange={(value) => setFormData((prev) => ({ ...prev, role: value }))}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select your primary role" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="developer">Publish and monetize APIs</SelectItem>
-                    <SelectItem value="consumer">Discover and use APIs</SelectItem>
-                    <SelectItem value="both">Both publish and consume APIs</SelectItem>
-                  </SelectContent>
-                </Select>
               </div>
 
               <div className="flex items-center space-x-2">
@@ -151,7 +165,11 @@ export default function RegisterPage() {
                 </Label>
               </div>
 
-              <Button type="submit" className="w-full" disabled={isLoading || !formData.agreeToTerms}>
+              <Button
+                type="submit"
+                className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-lg hover:shadow-xl transition-all duration-300"
+                disabled={isLoading || !formData.agreeToTerms}
+              >
                 {isLoading ? "Creating account..." : "Create Account"}
               </Button>
             </form>

@@ -34,12 +34,12 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 const user = {
   name: "John Doe",
   email: "john@example.com",
-  role: "developer",
+  role: "user", // Set to 'user' or 'admin' for demonstration
   avatar: "/placeholder.svg?height=32&width=32",
 }
 
 const menuItems = {
-  developer: [
+  user: [
     {
       title: "Dashboard",
       url: "/dashboard",
@@ -51,35 +51,8 @@ const menuItems = {
       items: [
         { title: "All APIs", url: "/dashboard/apis" },
         { title: "Create API", url: "/dashboard/apis/create" },
-        { title: "Analytics", url: "/dashboard/apis/analytics" },
+        { title: "API Analytics", url: "/dashboard/apis/analytics" },
       ],
-    },
-    {
-      title: "API Keys",
-      url: "/dashboard/keys",
-      icon: Key,
-    },
-    {
-      title: "Subscriptions",
-      url: "/dashboard/subscriptions",
-      icon: Users,
-    },
-    {
-      title: "Analytics",
-      url: "/dashboard/analytics",
-      icon: BarChart3,
-    },
-    {
-      title: "Billing",
-      url: "/dashboard/billing",
-      icon: CreditCard,
-    },
-  ],
-  consumer: [
-    {
-      title: "Dashboard",
-      url: "/dashboard",
-      icon: LayoutDashboard,
     },
     {
       title: "Marketplace",
@@ -97,47 +70,42 @@ const menuItems = {
       icon: Key,
     },
     {
-      title: "Usage",
-      url: "/dashboard/usage",
-      icon: BarChart3,
-    },
-    {
-      title: "Billing",
+      title: "Usage & Billing",
       url: "/dashboard/billing",
       icon: CreditCard,
     },
   ],
   admin: [
     {
-      title: "Dashboard",
+      title: "Admin Dashboard",
       url: "/dashboard",
       icon: LayoutDashboard,
     },
     {
-      title: "Users",
-      url: "/dashboard/users",
+      title: "User Management",
+      url: "/dashboard/admin/users",
       icon: Users,
     },
     {
-      title: "APIs",
+      title: "API Oversight",
       url: "/dashboard/admin/apis",
       icon: Code,
     },
     {
-      title: "Analytics",
+      title: "Platform Analytics",
       url: "/dashboard/admin/analytics",
       icon: BarChart3,
     },
     {
-      title: "Settings",
-      url: "/dashboard/settings",
+      title: "Platform Settings",
+      url: "/dashboard/admin/settings",
       icon: Settings,
     },
   ],
 }
 
 export function AppSidebar() {
-  const items = menuItems[user.role as keyof typeof menuItems] || menuItems.developer
+  const items = menuItems[user.role as keyof typeof menuItems] || menuItems.user // Default to user if role is unknown
 
   return (
     <Sidebar>
@@ -157,7 +125,7 @@ export function AppSidebar() {
           <SidebarGroupLabel>Navigation</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {items.map((item) => (
+              {items.map((item:any) => (
                 <SidebarMenuItem key={item.title}>
                   {item.items ? (
                     <Collapsible className="group/collapsible">
@@ -170,7 +138,7 @@ export function AppSidebar() {
                       </CollapsibleTrigger>
                       <CollapsibleContent>
                         <SidebarMenuSub>
-                          {item.items.map((subItem) => (
+                          {item.items.map((subItem:any) => (
                             <SidebarMenuSubItem key={subItem.title}>
                               <SidebarMenuSubButton asChild>
                                 <a href={subItem.url}>
