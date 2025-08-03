@@ -1,3 +1,4 @@
+app_sidebar:
 "use client"
 import {
   Sidebar,
@@ -39,7 +40,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 const user = {
   name: "John Doe",
   email: "john@example.com",
-  role: "user", // <--- Change this to "admin" to see the admin sidebar
+  role: "admin", // <--- Change this to "admin" to see the admin sidebar
   avatar: "/placeholder.svg?height=32&width=32",
 }
 
